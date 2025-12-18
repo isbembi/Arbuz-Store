@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+{% extends 'store/main.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+</head>
+<body>
+{% block content %}
+    <div class="row">
+        <div class="col-12 mb-3">
+            <a class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
+        </div>
+        <div class="col-lg-8">
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div><strong>Items:</strong> <span class="ml-2">{{ order.get_cart_items }}</span></div>
+                        <div><strong>Total:</strong> <span class="ml-2 text-primary">${{ order.get_cart_total|floatformat:2 }}</span></div>
+                        <div>
+                            <a class="btn btn-success btn-sm" href="{% url 'checkout' %}">Checkout</a>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="list-group">
+                        {% for item in items %}
+                            <div class="list-group-item d-flex align-items-center">
+                                <img src="{{ item.product.imageURL }}" class="img-fluid" style="width:80px; height:80px; object-fit:cover;" alt="{{ item.product.name }}">
+                                <div class="ml-3 flex-grow-1">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="font-weight-bold">{{ item.product.name }}</div>
+                                        <div class="text-muted">${{ item.get_total }}</div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <div class="text-muted">Price: ${{ item.product.price|floatformat:2 }}</div>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button data-product={{ item.product.id }} data-action="add" class="btn btn-outline-secondary update-cart">+</button>
+                                            <button class="btn btn-light" disabled>{{ item.quantity }}</button>
+                                            <button data-product={{ item.product.id }} data-action="remove" class="btn btn-outline-secondary update-cart">-</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card shadow-sm mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Order Summary</h5>
+                    <p class="mb-1">Items: <strong>{{ order.get_cart_items }}</strong></p>
+                    <p class="mb-3">Total: <strong class="text-primary">${{ order.get_cart_total|floatformat:2 }}</strong></p>
+                    <a class="btn btn-success btn-block" href="{% url 'checkout' %}">Proceed to Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+</body>
+</html>

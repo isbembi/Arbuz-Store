@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+{% extends 'store/main.html' %}
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+</head>
+<body>
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box-element">
+            <h3>My Profile</h3>
+            <hr>
+        </div>
+    </div>
+</div>
+
+<!-- Account Information -->
+<div class="row">
+    <div class="col-lg-6">
+        <div class="box-element">
+            <h5>Account Information</h5>
+            <hr>
+            <p><strong>Username:</strong> {{ request.user.username }}</p>
+            <p><strong>Email:</strong> {{ request.user.email }}</p>
+            <p><strong>Name:</strong> {{ customer.name }}</p>
+            <p><strong>Member Since:</strong> {{ request.user.date_joined|date:"M d, Y" }}</p>
+            <hr>
+            <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="col-lg-6">
+        <div class="box-element">
+            <h5>Order Statistics</h5>
+            <hr>
+            <p><strong>Total Orders:</strong> {{ orders.count }}</p>
+            <p><strong>Completed Orders:</strong> {{ orders|dictsort:"complete"|length }}</p>
+            {% if orders %}
+                <p><strong>Last Order:</strong> {{ orders.first.date_ordered|date:"M d, Y" }}</p>
+            {% else %}
+                <p><strong>Last Order:</strong> No orders yet</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Order History -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box-element">
+            <h5>Order History</h5>
+            <hr>
+
+            {% if orders %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                                <tr>
+                                    <td>#{{ order.id }}</td>
+                                    <td>{{ order.date_ordered|date:"M d, Y" }}</td>
+                                    <td>{{ order.get_cart_items }}</td>
+                                    <td>${{ order.get_cart_total|floatformat:2 }}</td>
+                                    <td>
+                                        {% if order.complete %}
+                                            <span class="badge badge-success">Completed</span>
+                                        {% else %}
+                                            <span class="badge badge-warning">Pending</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">You haven't placed any orders yet. <a href="{% url 'store' %}">Continue shopping</a></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <a href="{% url 'store' %}" class="btn btn-outline-dark">← Back to Store</a>
+    </div>
+</div>
+
+{% endblock content %}
+
+</body>
+</html>

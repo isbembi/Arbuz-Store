@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+{% extends 'store/main.html' %}
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-6 offset-lg-3">
+        <div class="box-element">
+            <h3>Create Account</h3>
+            <hr>
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <!-- Username field -->
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <small class="text-danger d-block">
+                            {% for error in form.username.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </small>
+                    {% endif %}
+                    <small class="form-text text-muted">
+                        • 150 characters or fewer<br>
+                        • Letters, digits and @/./+/-/_ only
+                    </small>
+                </div>
+
+                <!-- Email field -->
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <small class="text-danger d-block">
+                            {% for error in form.email.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </small>
+                    {% endif %}
+                </div>
+
+                <!-- Password field -->
+                <div class="form-group">
+                    <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                        <small class="text-danger d-block">
+                            {% for error in form.password1.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </small>
+                    {% endif %}
+                    <small class="form-text text-muted">
+                        • Must contain at least 8 characters<br>
+                        • Cannot be entirely numeric
+                    </small>
+                </div>
+
+                <!-- Password confirmation field -->
+                <div class="form-group">
+                    <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                        <small class="text-danger d-block">
+                            {% for error in form.password2.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </small>
+                    {% endif %}
+                    <small class="form-text text-muted">
+                        • Enter the same password as before for verification
+                    </small>
+                </div>
+
+                <button type="submit" class="btn btn-success btn-block">Register</button>
+            </form>
+
+            <hr>
+            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+</body>
+</html>

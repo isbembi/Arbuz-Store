@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% extends 'store/main.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product detail</title>
+</head>
+<body>
+
+{% block content %}
+    <div class="row">
+        <div class="col-12 mb-3">
+            <a class="btn btn-outline-dark btn-sm" href="{% url 'store' %}">&#x2190; Back to store</a>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <img class="card-img-top" src="{{ product.imageURL }}" style="object-fit:contain; height:420px;" alt="{{ product.name }}">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-3 h-100 shadow-sm">
+                <h3 class="mb-2">{{ product.name }}</h3>
+                <div class="mb-3">
+                    <span class="h4 text-primary">${{ product.price|floatformat:2 }}</span>
+                </div>
+                <p class="text-muted" style="line-height:1.6">{{ product.desc }}</p>
+                <div class="mt-4">
+                    <button data-product="{{ product.id }}" data-action="add" class="btn btn-primary add-btn update-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}
+
+</div>
+</body>
+</html>
